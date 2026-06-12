@@ -1,0 +1,127 @@
+---
+// src/components/IntegrationsSection.astro
+---
+
+<section class="relative bg-black py-10 md:py-22 flex flex-col items-center overflow-hidden font-sans text-white">
+  
+  <!-- <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none z-0"></div> -->
+
+  <div class="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto px-6">
+    
+    <h2 class="text-4xl md:text-[48px] font-serif tracking-tight text-white leading-[1.2] mb-16 md:mb-24 text-center">
+      How To<br />Join Us In Space
+    </h2>
+
+    <div class="relative w-full aspect-auto md:aspect-[2/1] flex items-center justify-center py-12 md:py-0">
+      
+      <div class="absolute inset-0 opacity-20 pointer-events-none" 
+           style="background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px); background-size: 40px 40px; background-position: center;">
+      </div>
+
+      <!-- Horizontal Line (Stays on mobile to anchor the center radar) -->
+      <div class="absolute left-0 right-0 top-1/2 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-y-1/2"></div>
+      
+      <!-- Vertical Line (Hidden on mobile so it doesn't cross through text) -->
+      <div class="hidden md:block absolute top-0 bottom-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent -translate-x-1/2"></div>
+
+      <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-16 h-16">
+        
+        <div class="radar-wave"></div>
+        <div class="radar-wave" style="animation-delay: 1s;"></div>
+        <div class="radar-wave" style="animation-delay: 2s;"></div>
+        <!-- <div class="radar-wave" style="animation-delay: 2.5s;"></div> -->
+
+        <img 
+          src="/assets/RadarImgCenter.png" 
+          alt="Central Integration Hub" 
+          class="relative z-10 w-full h-full object-contain rounded-full shadow-[0_0_30px_rgba(168,85,247,0.6)]"
+        />
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full relative z-10 gap-y-8 md:gap-y-0">
+        
+        <!-- Item 1 -->
+        <div class="flex flex-col items-center justify-center text-center px-8 pt-8 md:pt-0 pb-4 md:pb-20">
+          <div class="w-12 h-12 bg-[#ff4f00] rounded-xl mb-6 flex items-center justify-center shadow-[0_0_20px_rgba(255,79,0,0.2)]">
+            <span class="text-white font-bold text-sm tracking-tighter">zapier</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-white">Zapier</h3>
+          <p class="text-[15px] text-gray-400 leading-relaxed max-w-[260px]">
+            Connect with Reflect with dozens of applications without code
+          </p>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="flex flex-col items-center justify-center text-center px-8 pb-24 md:pb-20">
+          <div class="w-12 h-12 bg-white rounded-xl mb-6 flex items-center justify-center shadow-lg">
+            <span class="text-black font-serif font-bold text-2xl">R</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-white">Readwise</h3>
+          <p class="text-[15px] text-gray-400 leading-relaxed max-w-[260px]">
+            Sync your reading highlights and notes with Reflect.
+          </p>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="flex flex-col items-center justify-center text-center px-8 pt-24 md:pt-20">
+          <div class="flex items-center gap-3 mb-6 bg-white/5 p-2 rounded-xl border border-white/5 backdrop-blur-sm">
+            <div class="w-8 h-8 bg-white rounded-md flex items-center justify-center">
+              <span class="text-blue-600 font-bold text-xs">31</span>
+            </div>
+            <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center text-white font-bold text-xs">
+              O
+            </div>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-white">Google and Outlook</h3>
+          <p class="text-[15px] text-gray-400 leading-relaxed max-w-[260px]">
+            Integrate your contacts and calendars
+          </p>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="flex flex-col items-center justify-center text-center px-8 pt-4 md:pt-20 pb-8 md:pb-0">
+          <div class="flex items-center gap-3 mb-6 bg-white/5 p-2 rounded-xl border border-white/5 backdrop-blur-sm">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 via-yellow-400 to-green-500 border-4 border-white shadow-sm"></div>
+            <div class="w-8 h-8 rounded-full border border-gray-400 flex items-center justify-center bg-blue-500">
+               <div class="w-6 h-6 rounded-full border border-white flex items-center justify-center">
+                  <div class="w-1 h-3 bg-red-500 rotate-45"></div>
+               </div>
+            </div>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-white">Chrome and Safari</h3>
+          <p class="text-[15px] text-gray-400 leading-relaxed max-w-[260px]">
+            Save web clips and sync with your Kindle
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  /* Wave Animation Logic */
+  .radar-wave {
+    position: absolute;
+    inset: -10px; /* Adjust this to make the starting circle slightly larger than the image */
+    border-radius: 50%;
+    blur: 20px;
+    border: 20px solid rgba(168, 85, 247, 0.4); /* Purple border matching the theme */
+    background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 90%);
+    /* The animation duration (3s) controls the speed of the wave */
+    animation: wave-expand 3s cubic-bezier(0.1, 0.5, 0.5, 1) infinite;
+    pointer-events: none;
+  }
+
+  @keyframes wave-expand {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(3); /* How far the wave travels before vanishing */
+      opacity: 0;
+    }
+  }
+</style>

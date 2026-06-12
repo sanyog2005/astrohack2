@@ -2,9 +2,9 @@
 // src/components/RadarSection.astro
 ---
 
-<section class="relative bg-black pt-20 pb-32 overflow-hidden font-sans border-t border-gray-800">
+<section class="relative bg-black pt-10 md:pt-20 pb-20 md:pb-32 overflow-hidden font-sans">
   
-  <div class="relative w-full max-w-[900px] h-[900px] mx-auto radar-mask pointer-events-none select-none">
+  <div class="relative w-full max-w-[900px] aspect-square md:aspect-auto md:h-[900px] mx-auto radar-mask pointer-events-none select-none">
     
     <img 
       src="/assets/RadarImg.png" 
@@ -13,26 +13,26 @@
     />
 
     <div class="absolute inset-0 rounded-full radar-sweep mix-blend-screen"></div>
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-20 h-20 bg-[#110a2e] border border-[#6b58ff]/60 rounded-full shadow-[0_0_40px_rgba(107,88,255,0.8)] backdrop-blur-md">
-  <img 
-    src="/assets/RadarImgCenter.png" 
-    alt="Mission Control Node" 
-    class="w-20 h-20 object-contain" 
-  />
-</div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-14 h-14 md:w-20 md:h-20 bg-[#110a2e] border border-[#6b58ff]/60 rounded-full shadow-[0_0_40px_rgba(107,88,255,0.8)] backdrop-blur-md">
+      <img 
+        src="/assets/RadarImgCenter.png" 
+        alt="Mission Control Node" 
+        class="w-14 h-14 md:w-20 md:h-20 object-contain" 
+      />
+    </div>
   </div>
 
-  <div class="relative z-10 flex flex-col items-center -mt-[380px] px-6">
+  <div class="relative z-10 flex flex-col items-center -mt-[45%] md:-mt-[380px] px-6">
     
     <div class="px-4 py-1.5 border border-indigo-500/30 rounded-full text-[11px] font-semibold tracking-wide text-indigo-200 mb-6 bg-[#100b2e]/60 backdrop-blur-sm">
       Deep space tracking
     </div>
 
-    <h2 class="text-4xl md:text-5xl font-serif tracking-tight text-white mb-5">
+    <h2 class="text-4xl md:text-5xl font-serif tracking-tight text-white mb-5 text-center md:text-left">
       Never lose a signal
     </h2>
     
-    <p class="text-gray-400 text-center max-w-[500px] mb-20 text-sm leading-relaxed">
+    <p class="text-gray-400 text-center max-w-[500px] mb-12 md:mb-20 text-sm leading-relaxed">
       Monitor satellite telemetry, orbital data, and comms — all in one place.<br class="hidden sm:block"/>
       Then quickly analyze them from mission control.
     </p>
@@ -43,7 +43,10 @@
       <div class="hidden md:block absolute top-0 bottom-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-gray-700/50 to-transparent"></div>
       <div class="hidden md:block absolute top-4 bottom-4 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-gray-700/50 to-transparent -translate-x-1/2"></div>
 
-      <div class="flex-1 flex flex-col items-center text-center px-8">
+      <div class="flex-1 flex flex-col items-center text-center px-4 md:px-8 relative">
+        <!-- Subtle mobile divider -->
+        <div class="md:hidden absolute -bottom-6 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-gray-700/50 to-transparent"></div>
+        
         <div class="text-gray-200 mb-5">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -59,7 +62,7 @@
         </p>
       </div>
 
-      <div class="flex-1 flex flex-col items-center text-center px-8">
+      <div class="flex-1 flex flex-col items-center text-center px-4 md:px-8 mt-4 md:mt-0">
         <div class="text-gray-200 mb-5">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>

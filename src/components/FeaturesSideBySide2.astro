@@ -9,23 +9,23 @@ const letterPhysics = animatedWord.map((char, index) => {
 });
 ---
 
-<section id="features-section" class="relative bg-black px-6 md:px-12 py-24 border-t border-gray-800">
+<section id="features-section" class="relative bg-black px-6 md:px-12 py-16 lg:py-24">
   
-  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-start relative">
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-start relative">
     
-    <div class="lg:w-[45%] sticky top-32 flex flex-col gap-10">
+    <div class="lg:w-[45%] relative lg:sticky top-0 lg:top-32 flex flex-col gap-8 lg:gap-10">
       
-      <p class="text-xl text-gray-300 leading-relaxed font-sans max-w-md">
+      <p class="text-base md:text-lg lg:text-xl text-gray-300 leading-relaxed font-sans max-w-full lg:max-w-md">
         AstroHack is a student-led, weekend-long hackathon where you create software for the final frontier. From orbital mechanics to satellite data dashboards — designed to push the boundaries of modern space tech.
       </p>
 
-      <h2 class="text-3xl md:text-3xl font-mono tracking-tight text-gray-300 leading-tight mb-4">
+      <h2 class="text-2xl md:text-3xl lg:text-3xl font-mono tracking-tight text-gray-300 leading-tight mb-4">
         We build 
-        <span class="inline-flex relative z-10 text-gray-300 font-light mt-2">
+        <span class="inline-flex relative z-10 text-gray-300 font-light mt-2 flex-wrap">
           {animatedWord.map((char, index) => (
             <span 
               class="inline-block animate-letter will-change-transform" 
-              style={{ whiteSpace: 'pre' }}
+              style={{ whiteSpace: 'pre-wrap' }}
               data-delay={letterPhysics[index].delay}
             >{char}</span>
           ))}
@@ -46,50 +46,51 @@ const letterPhysics = animatedWord.map((char, index) => {
 
     </div>
 
-    <div class="lg:w-[55%] flex flex-col gap-8 pb-1">
+    <div class="lg:w-[55%] flex flex-col gap-6 lg:gap-8 pb-1">
       
-      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+      <div class="bg-black border border-gray-800 rounded-2xl p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 shadow-sm">
         <div class="shrink-0 text-gray-300">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-gray-300 mb-2">Mission Control</h3>
+          <h3 class="text-lg md:text-xl lg:text-xl font-bold text-gray-300 mb-1 lg:mb-2">Mission Control</h3>
           <p class="text-sm text-gray-300 leading-relaxed font-sans">
             Build software that manages space operations. Create web apps, dashboards, and communication protocols for the next generation of spaceflight.
           </p>
         </div>
       </div>
-      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+      
+      <div class="bg-black border border-gray-800 rounded-2xl p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 shadow-sm">
         <div class="shrink-0 text-gray-300">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-gray-300 mb-2">Orbital Dynamics</h3>
+          <h3 class="text-lg md:text-xl lg:text-xl font-bold text-gray-300 mb-1 lg:mb-2">Orbital Dynamics</h3>
           <p class="text-sm text-gray-300 leading-relaxed font-sans">
             Calculate trajectories and map the cosmos. Develop complex algorithms that track satellites, predict orbital decay, and navigate the stars.
           </p>
         </div>
       </div>
 
-      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+      <div class="bg-black border border-gray-800 rounded-2xl p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 shadow-sm">
         <div class="shrink-0 text-gray-300">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-gray-300 mb-2">Data Telemetry</h3>
+          <h3 class="text-lg md:text-xl lg:text-xl font-bold text-gray-300 mb-1 lg:mb-2">Data Telemetry</h3>
           <p class="text-sm text-gray-300 leading-relaxed font-sans">
             Process real-time streams from deep space. Build pipelines that parse, analyze, and visualize complex datasets from rovers and remote probes.
           </p>
         </div>
       </div>
 
-      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+      <div class="bg-black border border-gray-800 rounded-2xl p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-8 shadow-sm">
         <div class="shrink-0 text-gray-300">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -99,14 +100,14 @@ const letterPhysics = animatedWord.map((char, index) => {
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-gray-300 mb-2">Space AI & Vision</h3>
+          <h3 class="text-lg md:text-xl lg:text-xl font-bold text-gray-300 mb-1 lg:mb-2">Space AI & Vision</h3>
           <p class="text-sm text-gray-300 leading-relaxed font-sans">
             Train machine learning models for the void. From automated crater detection to autonomous rover navigation, build smart systems for exploration.
           </p>
         </div>
       </div>
 
-      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-1 shadow-sm">
+      <div class="bg-black border border-gray-800 rounded-2xl p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-5 md:gap-6 lg:gap-1 shadow-sm">
         <div class="shrink-0 text-gray-300">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14.5 4C14.5 4 10 7 10 12C10 17 14.5 20 14.5 20"></path>
@@ -118,7 +119,7 @@ const letterPhysics = animatedWord.map((char, index) => {
           </svg>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-gray-300 mb-2">Zero-G Interfaces</h3>
+          <h3 class="text-lg md:text-xl lg:text-xl font-bold text-gray-300 mb-1 lg:mb-2">Zero-G Interfaces</h3>
           <p class="text-sm text-gray-300 leading-relaxed font-sans">
             Design interfaces for astronauts and ground control. Create accessible, high-contrast, and intuitive software tailored for extreme environments.
           </p>
