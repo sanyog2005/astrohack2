@@ -1,0 +1,279 @@
+<section id="scroll-sequence" class="relative h-[400vh]">
+        <div id="bg-container" class="sticky top-0 w-full h-screen overflow-hidden bg-black text-white transition-colors duration-1000 ease-out">
+
+          <div class="absolute inset-0 flex flex-col justify-center gap-6 md:gap-10 overflow-hidden font-mono text-5xl md:text-8xl font-bold tracking-tighter whitespace-nowrap opacity-90 select-none">
+            <div class="marquee-row flex gap-4 will-change-transform" data-dir="-1" data-start="0">
+              <span>raise • win • present • sell • launch • impress • close •</span>
+              <span>raise • win • present • sell • launch • impress • close •</span>
+            </div>
+            <div class="marquee-row flex gap-4 will-change-transform" data-dir="1" data-start="-30">
+              <span>raise • win • present • sell • launch • impress • close •</span>
+              <span>raise • win • present • sell • launch • impress • close •</span>
+            </div>
+            <div class="marquee-row flex gap-4 will-change-transform" data-dir="-1" data-start="-10">
+              <span>raise • win • present • sell • launch • impress • close •</span>
+              <span>raise • win • present • sell • launch • impress • close •</span>
+            </div>
+            <div class="marquee-row flex gap-4 will-change-transform" data-dir="1" data-start="-40">
+              <span>raise • win • present • sell • launch • impress • close •</span>
+              <span>raise • win • present • sell • launch • impress • close •</span>
+            </div>
+            <div class="marquee-row flex gap-4 will-change-transform" data-dir="-1" data-start="-20">
+              <span>raise • win • present • sell • launch • impress • close •</span>
+              <span>raise • win • present • sell • launch • impress • close •</span>
+            </div>
+          </div>
+
+          <div id="hero-layer" class="absolute inset-0 bg-[#2a2d2e] will-change-clip" style="clip-path: circle(150% at 50% 50%);">
+            <div id="hero-content" class="w-full h-full grid grid-cols-1 lg:grid-cols-2 items-center px-8 lg:px-24 will-change-filter" style="filter: blur(0px);">
+              
+              <div class="w-full h-full flex flex-col justify-center z-10">
+                <div class="max-w-xl">
+                  <h1 class="text-5xl md:text-7xl font-serif text-[#f2f0e9] leading-[1.1] mb-6">
+                    Production that runs itself.
+                  </h1>
+                  <p class="text-xl text-gray-400 leading-relaxed mb-10 font-serif">
+                    Antimetal is the autonomous system for production. Continuously understanding, operating, and improving your environment.
+                  </p>
+
+                  <div class="flex items-center gap-6">
+                    <button class="bg-[#1a1b1c] text-white px-6 py-3 rounded-full font-medium hover:bg-black transition-colors shadow-lg">
+                      Book a demo
+                    </button>
+                    <button class="bracket-btn relative px-6 py-3 text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                      <span class="bracket-btn-bottom"></span>
+                      Explore the research
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="three-container" class="relative w-full h-full flex justify-center items-center overflow-visible z-10">
+                <div id="node-tooltip" class="absolute pointer-events-none opacity-0 transition-opacity bg-[#d4d4d4] text-[10px] font-bold text-gray-600 px-3 py-1.5 rounded-full shadow-lg transform -translate-x-1/2 -translate-y-[180%] flex items-center gap-2 border border-white/20 whitespace-nowrap z-50">
+                  <div class="w-2 h-2 rounded-full bg-yellow-500 shadow-sm"></div>
+                  <span id="tooltip-text" class="tracking-wide">COVERAGE GAP: PAYMENTS-ROUTER</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <script>
+      import * as THREE from 'three';
+
+      document.addEventListener('DOMContentLoaded', () => {
+
+        // --- SCROLL LOGIC ---
+        const sequence = document.getElementById('scroll-sequence');
+        const bgContainer = document.getElementById('bg-container');
+        const heroLayer = document.getElementById('hero-layer');
+        const heroContent = document.getElementById('hero-content');
+        const marqueeRows = document.querySelectorAll('.marquee-row');
+
+        if (sequence && heroLayer && heroContent) {
+          let tickingScroll = false;
+          const updateScrollAnimation = () => {
+            const rect = sequence.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            let p = -rect.top / (rect.height - viewportHeight);
+            p = Math.max(0, Math.min(1, p));
+
+            let heroP = Math.min(1, p / 0.4); 
+            const currentRadius = 150 * (1 - heroP);
+            const currentBlur = 15 * heroP; 
+            
+            heroLayer.style.clipPath = `circle(${currentRadius}% at 50% 50%)`;
+            heroContent.style.filter = `blur(${currentBlur}px)`;
+            heroContent.style.opacity = `${1 - heroP}`;
+
+            let scrollP = Math.min(1, p / 0.7);
+            const maxTravelDistance = 25;
+            marqueeRows.forEach((row) => {
+              const dir = parseFloat(row.getAttribute('data-dir') || '1');
+              const startOffset = parseFloat(row.getAttribute('data-start') || '0');
+              const currentOffset = startOffset + (dir * scrollP * maxTravelDistance);
+              row.style.transform = `translate3d(${currentOffset}%, 0, 0)`;
+            });
+
+            if (p > 0.7) {
+              bgContainer.classList.remove('bg-black', 'text-white');
+              bgContainer.classList.add('bg-white', 'text-black');
+            } else {
+              bgContainer.classList.remove('bg-white', 'text-black');
+              bgContainer.classList.add('bg-black', 'text-white');
+            }
+            tickingScroll = false;
+          };
+
+          window.addEventListener('scroll', () => {
+            if (!tickingScroll) {
+              window.requestAnimationFrame(updateScrollAnimation);
+              tickingScroll = true;
+            }
+          }, { passive: true });
+          updateScrollAnimation();
+        }
+
+        // --- THREE.JS LOGIC ---
+        const container = document.getElementById('three-container');
+        const tooltip = document.getElementById('node-tooltip');
+        const tooltipText = document.getElementById('tooltip-text');
+
+        if (!container) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        
+        // FIX: Pushed the camera back significantly from 100 to 130 to fit the whole graph
+        camera.position.z = 130; 
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const networkGroup = new THREE.Group();
+        scene.add(networkGroup);
+
+        const numNodes = 100;
+        const colors = [0x1a1a1a, 0x111111, 0x0a0a0a, 0x111111, 0xf4b41a, 0xf05d23, 0x9da95b];
+        const labels = [
+          'COVERAGE GAP: PAYMENTS-ROUTER HAS NO SATURATION ALERT', 
+          'BACKUPS: DUPLICATE 1.1 TB', 
+          'EC2 INSTANCE OVERPROVISIONED', 
+          'DYNAMODB READ CAPACITY EXCEEDED', 
+          'IDLE RDS INSTANCE'
+        ];
+
+        const centerGeo = new THREE.SphereGeometry(1.5, 32, 32);
+        const centerMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+        const centerNode = new THREE.Mesh(centerGeo, centerMat);
+        networkGroup.add(centerNode);
+
+        const interactableNodes = [];
+        
+        for (let i = 0; i < numNodes; i++) {
+          // FIX: Reduced maximum spread from (30 + 10) to (25 + 5) so nodes don't hit the edges
+          const distance = Math.random() * 25 + 5; 
+          const theta = Math.random() * Math.PI * 2; 
+          const phi = Math.acos((Math.random() * 2) - 1); 
+
+          const x = distance * Math.sin(phi) * Math.cos(theta);
+          const y = distance * Math.sin(phi) * Math.sin(theta);
+          const z = distance * Math.cos(phi);
+
+          const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(x, y, z)];
+          const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+          const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08 });
+          const line = new THREE.Line(lineGeo, lineMat);
+          networkGroup.add(line);
+
+          const radius = Math.random() * Math.random() * 1.5 + 0.4;
+          const colorHex = colors[Math.floor(Math.random() * colors.length)];
+          const nodeGeo = new THREE.SphereGeometry(radius, 32, 32);
+          const nodeMat = new THREE.MeshBasicMaterial({ color: colorHex });
+          const node = new THREE.Mesh(nodeGeo, nodeMat);
+          
+          node.position.set(x, y, z);
+          
+          node.userData = {
+            baseColor: colorHex,
+            baseScale: 1,
+            label: labels[Math.floor(Math.random() * labels.length)],
+            lineRef: line 
+          };
+
+          networkGroup.add(node);
+          interactableNodes.push(node);
+        }
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(-1000, -1000); 
+        let hoveredNode = null;
+
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+
+        container.addEventListener('mousemove', (event) => {
+          const rect = container.getBoundingClientRect();
+          mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+          targetRotationY = mouse.x * 0.8;  
+          targetRotationX = -mouse.y * 0.8; 
+        });
+
+        container.addEventListener('mouseleave', () => {
+          mouse.x = -1000;
+          mouse.y = -1000;
+          targetRotationX = 0; 
+          targetRotationY = 0;
+        });
+
+        window.addEventListener('resize', () => {
+          const width = container.clientWidth;
+          const height = container.clientHeight;
+          renderer.setSize(width, height);
+          camera.aspect = width / height;
+          camera.updateProjectionMatrix();
+        });
+
+        function animate() {
+          requestAnimationFrame(animate);
+
+          networkGroup.rotation.y += (targetRotationY - networkGroup.rotation.y) * 0.05;
+          networkGroup.rotation.x += (targetRotationX - networkGroup.rotation.x) * 0.05;
+
+          if (hoveredNode) {
+            hoveredNode.scale.set(1, 1, 1);
+            hoveredNode.material.color.setHex(hoveredNode.userData.baseColor);
+            hoveredNode.userData.lineRef.material.opacity = 0.08;
+            hoveredNode.userData.lineRef.material.color.setHex(0xffffff);
+            hoveredNode = null;
+          }
+
+          raycaster.setFromCamera(mouse, camera);
+          raycaster.params.Points.threshold = 1; 
+          const intersects = raycaster.intersectObjects(interactableNodes);
+
+          if (intersects.length > 0) {
+            hoveredNode = intersects[0].object;
+            hoveredNode.scale.set(1.5, 1.5, 1.5);
+            
+            if (hoveredNode.userData.baseColor === 0x111111 || hoveredNode.userData.baseColor === 0x1a1a1a) {
+              hoveredNode.material.color.setHex(0x555555); 
+            } else {
+              hoveredNode.material.color.setHex(0xffffff); 
+            }
+
+            hoveredNode.userData.lineRef.material.opacity = 0.6;
+            hoveredNode.userData.lineRef.material.color.setHex(hoveredNode.userData.baseColor === 0x111111 ? 0xffffff : hoveredNode.userData.baseColor);
+
+            const vector = new THREE.Vector3();
+            vector.setFromMatrixPosition(hoveredNode.matrixWorld);
+            vector.project(camera);
+
+            const x = (vector.x * 0.5 + 0.5) * container.clientWidth;
+            const y = -(vector.y * 0.5 - 0.5) * container.clientHeight;
+
+            tooltip.style.opacity = '1';
+            tooltip.style.left = `${x}px`;
+            tooltip.style.top = `${y - 15}px`; 
+            tooltipText.innerText = hoveredNode.userData.label;
+            
+            container.style.cursor = 'pointer';
+
+          } else {
+            tooltip.style.opacity = '0';
+            container.style.cursor = 'crosshair';
+          }
+
+          renderer.render(scene, camera);
+        }
+
+        animate();
+      });
+    </script>

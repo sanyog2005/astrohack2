@@ -1,0 +1,45 @@
+---
+// src/components/PricingHeader.astro
+---
+
+<section class="py-32 bg-white flex flex-col items-center justify-center px-6 border-t border-gray-100">
+  <div class="max-w-3xl mx-auto flex flex-col items-center text-center reveal-on-scroll opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+    
+    <span class="bg-[#fcfcf9] text-[#9ca3af] border border-gray-200 text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-[0.25em] mb-8 shadow-sm">
+      Pricing
+    </span>
+
+    <h2 class="text-5xl md:text-7xl font-serif text-gray-900 tracking-tight mb-6">
+      Simple plans, <span class="italic">zero fluff.</span>
+    </h2>
+
+    <p class="text-xl text-gray-500 max-w-2xl font-serif leading-relaxed">
+      Pick a plan that fits how you build. Upgrade or cancel any time.
+    </p>
+
+  </div>
+</section>
+
+<script>
+  // Smooth scroll reveal animation logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Remove the hidden state classes
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          // Add the visible state classes
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          // Stop observing once it has been revealed
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.3, // Trigger when 30% of the element is visible
+      rootMargin: "0px 0px -50px 0px"
+    });
+
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    revealElements.forEach((el) => observer.observe(el));
+  });
+</script>

@@ -1,0 +1,182 @@
+---
+const textToAnimate = "intergalactic software"
+const animatedWord = textToAnimate.split('');
+
+const letterPhysics = animatedWord.map((char, index) => {
+  return {
+    delay: index * 0.08,
+  };
+});
+---
+
+<section id="features-section" class="relative bg-black px-6 md:px-12 py-24 border-t border-gray-800">
+  
+  <div class="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-start relative">
+    
+    <div class="lg:w-[45%] sticky top-32 flex flex-col gap-10">
+      
+      <p class="text-xl text-gray-300 leading-relaxed font-sans max-w-md">
+        AstroHack is a student-led, weekend-long hackathon where you create software for the final frontier. From orbital mechanics to satellite data dashboards — designed to push the boundaries of modern space tech.
+      </p>
+
+      <h2 class="text-3xl md:text-3xl font-mono tracking-tight text-gray-300 leading-tight mb-4">
+        We build 
+        <span class="inline-flex relative z-10 text-gray-300 font-light mt-2">
+          {animatedWord.map((char, index) => (
+            <span 
+              class="inline-block animate-letter will-change-transform" 
+              style={{ whiteSpace: 'pre' }}
+              data-delay={letterPhysics[index].delay}
+            >{char}</span>
+          ))}
+        </span>
+      </h2>
+
+      <div>
+        <button class="relative px-6 py-2.5 rounded-full border border-white/10 text-xs font-bold tracking-widest overflow-hidden group transition-all duration-300 hover:border-white/30 hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+  <div class="absolute inset-0 bg-[linear-gradient(110deg,#171717_0%,#0a0a0a_50%,#171717_100%)] opacity-100 transition-opacity"></div>
+  
+  <div class="absolute inset-0 opacity-30 mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+  
+  <span class="relative z-10 flex items-center gap-2 text-gray-400 group-hover:text-white uppercase transition-colors duration-300">
+    Explore Tracks <span class="text-sm font-light">↗</span>
+  </span>
+</button>
+      </div>
+
+    </div>
+
+    <div class="lg:w-[55%] flex flex-col gap-8 pb-1">
+      
+      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+        <div class="shrink-0 text-gray-300">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-300 mb-2">Mission Control</h3>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            Build software that manages space operations. Create web apps, dashboards, and communication protocols for the next generation of spaceflight.
+          </p>
+        </div>
+      </div>
+      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+        <div class="shrink-0 text-gray-300">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-300 mb-2">Orbital Dynamics</h3>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            Calculate trajectories and map the cosmos. Develop complex algorithms that track satellites, predict orbital decay, and navigate the stars.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+        <div class="shrink-0 text-gray-300">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18m9-9H3m15.364-6.364l-12.728 12.728m0-12.728l12.728 12.728"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-300 mb-2">Data Telemetry</h3>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            Process real-time streams from deep space. Build pipelines that parse, analyze, and visualize complex datasets from rovers and remote probes.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-8 shadow-sm">
+        <div class="shrink-0 text-gray-300">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+            <path d="M7 10l3 3 7-7"></path>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-300 mb-2">Space AI & Vision</h3>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            Train machine learning models for the void. From automated crater detection to autonomous rover navigation, build smart systems for exploration.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-black border border-gray-800 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row gap-1 shadow-sm">
+        <div class="shrink-0 text-gray-300">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 4C14.5 4 10 7 10 12C10 17 14.5 20 14.5 20"></path>
+            <path d="M9.5 4C9.5 4 14 7 14 12C14 17 9.5 20 9.5 20"></path>
+            <line x1="10" y1="6" x2="14" y2="6"></line>
+            <line x1="10" y1="10" x2="14" y2="10"></line>
+            <line x1="10" y1="14" x2="14" y2="14"></line>
+            <line x1="10" y1="18" x2="14" y2="18"></line>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-300 mb-2">Zero-G Interfaces</h3>
+          <p class="text-sm text-gray-300 leading-relaxed font-sans">
+            Design interfaces for astronauts and ground control. Create accessible, high-contrast, and intuitive software tailored for extreme environments.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .animate-letter {
+    display: inline-block;
+    will-change: transform, opacity;
+    transform: translate3d(0, 100px, 0); 
+    opacity: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.getElementById('features-section');
+    const letters = document.querySelectorAll('.animate-letter');
+    
+    let scrollProgress = 0;
+    let targetProgress = 0;
+
+    const updatePeelingText = () => {
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      // Calculate progress relative to the window height so it finishes 
+      // as the element becomes sticky, rather than the whole tall section
+      let rawProgress = (windowHeight - rect.top) / windowHeight;
+      targetProgress = Math.max(0, Math.min(1.2, rawProgress));
+      
+      scrollProgress += (targetProgress - scrollProgress) * 0.15;
+
+      letters.forEach((letter) => {
+        const el = letter as HTMLElement;
+        const delay = parseFloat(el.getAttribute('data-delay') || '0');
+        
+        let letterT = Math.max(0, (scrollProgress * 2.2) - delay);
+        
+        let y = Math.max(0, 100 * (1 - Math.min(1, letterT * 2)));
+        let opacity = Math.min(1, letterT * 4);
+
+        el.style.transform = `translate3d(0, ${y}px, 0)`;
+        el.style.opacity = opacity.toString();
+      });
+
+      requestAnimationFrame(updatePeelingText);
+    };
+
+    if (section) {
+      requestAnimationFrame(updatePeelingText);
+    }
+  });
+</script>

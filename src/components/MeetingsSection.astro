@@ -1,0 +1,119 @@
+---
+// src/components/MeetingsSection.astro
+
+// We now have 10 slices for a smoother, more detailed wave effect.
+// The maxDrop forms a deep "U" curve, with the center pieces dropping 260px.
+const slices = [
+  { id: 1, offset: '0%', maxDrop: 0 },
+  { id: 2, offset: '-100%', maxDrop: 80 },
+  { id: 3, offset: '-200%', maxDrop: 160 },
+  { id: 4, offset: '-300%', maxDrop: 220 },
+  { id: 5, offset: '-400%', maxDrop: 260 },
+  { id: 6, offset: '-500%', maxDrop: 260 },
+  { id: 7, offset: '-600%', maxDrop: 220 },
+  { id: 8, offset: '-700%', maxDrop: 160 },
+  { id: 9, offset: '-800%', maxDrop: 80 },
+  { id: 10, offset: '-900%', maxDrop: 0 },
+];
+
+// Generate the 9 dividing lines needed for 10 columns
+const lines = Array.from({ length: 9 });
+---
+
+<section id="meetings-scroll-section" class="relative bg-black py-10 flex flex-col items-center font-sans">
+  
+    <div class="relative z-10 flex flex-col items-center px-6 w-full max-w-7xl mx-auto">
+    
+    
+
+    <h2 class="text-5xl md:text-[48px] font-serif tracking-tight text-white leading-[1.1] mb-6 text-center">
+      Coordinate your crew<br />across the cosmos
+    </h2>
+
+    <p class="text-lg md:text-[14px] text-[#a19fad] text-center mb-20 max-w-[640px] font-serif leading-relaxed">
+      Keep track of all your mission objectives and telemetry data.<br class="hidden md:block" />
+      Integrate your systems seamlessly with our custom space APIs and orbital tools.
+    </p>
+
+    <div class="w-full max-w-[1060px] mx-auto px-4 sm:px-6 relative">
+      
+      <div id="sliced-image-container" class="grid grid-cols-10 relative w-full aspect-[16/10] md:aspect-[16/9] shadow-[0_0_100px_rgba(0,0,0,0.6)] border border-white/10 bg-[#0d0a18]/50 rounded-[24px]">
+        
+        <div id="cut-lines-overlay" class="absolute inset-0 pointer-events-none z-20 will-change-[opacity]">
+          {lines.map((_, i) => (
+            <div 
+              class="absolute top-0 bottom-0 w-[1.5px] bg-gradient-to-b from-transparent via-white/50 to-white/10 blur-[0.5px] shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+              style={`left: ${(i + 1) * 10}%;`}
+            ></div>
+          ))}
+        </div>
+
+        {slices.map((slice, index) => (
+          <div 
+            class={`image-slice relative w-full h-full overflow-hidden will-change-transform ${index === 0 ? 'rounded-l-[24px]' : ''} ${index === 9 ? 'rounded-r-[24px]' : ''}`}
+            data-drop={slice.maxDrop}
+          >
+            <img 
+              src="/assets/cutEffectImage.webp" 
+              alt="Mission Control Dashboard"
+              class="absolute top-0 h-full max-w-none w-[1000%]"
+              style={`left: ${slice.offset}; object-fit: fill;`}
+              loading="lazy"
+            />
+          </div>
+        ))}
+        
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const imageContainer = document.getElementById('sliced-image-container');
+    const cutLines = document.getElementById('cut-lines-overlay');
+    const slices = document.querySelectorAll('.image-slice');
+    
+    let scrollProgress = 0;
+    let targetProgress = 0;
+
+    const updateSlices = () => {
+      if (!imageContainer) return;
+
+      const rect = imageContainer.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      const startY = windowHeight + 100; 
+      const endY = windowHeight * 0.35;   
+
+      let rawProgress = (startY - rect.top) / (startY - endY);
+      
+      targetProgress = Math.max(0, Math.min(1, rawProgress));
+      scrollProgress += (targetProgress - scrollProgress) * 0.12;
+
+      // Ensure the lines fade out completely as the slices merge
+      if (cutLines) {
+        // Opacity drops from 1 to 0 precisely as progress goes from 0 to 1
+        cutLines.style.opacity = Math.max(0, 1 - scrollProgress).toString();
+      }
+
+      slices.forEach((slice) => {
+        const el = slice as HTMLElement;
+        const maxDrop = parseFloat(el.getAttribute('data-drop') || '0');
+        
+        let y = maxDrop * (1 - scrollProgress);
+        let opacity = 0.3 + (0.7 * scrollProgress);
+
+        el.style.transform = `translate3d(0, ${y}px, 0)`;
+        el.style.opacity = opacity.toString();
+      });
+
+      requestAnimationFrame(updateSlices);
+    };
+
+    if (imageContainer) {
+      requestAnimationFrame(updateSlices);
+    }
+  });
+</script>

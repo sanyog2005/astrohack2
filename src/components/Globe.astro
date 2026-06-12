@@ -1,0 +1,191 @@
+---
+// src/components/Globe.astro
+import SpaceButtons from "./SpaceButtons.astro";
+
+export interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<div class={`mx-auto aspect-square w-full max-w-[600px] flex items-center justify-center relative ${className}`}>
+        <!-- <SpaceButtons /> -->
+
+  <div id="globe-wrapper" class="w-full h-full element-contain touch-none"></div>
+    <!-- <SpaceButtons /> -->
+</div>
+
+<script>
+  import * as THREE from "https://esm.sh/three";
+
+  const container = document.getElementById("globe-wrapper");
+
+  if (container) {
+    // --- 1. Scene Setup ---
+    const scene = new THREE.Scene();
+    
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 14;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // --- 2. Create Procedural Dotted Globe ---
+    const globeGroup = new THREE.Group(); // Group allows us to rotate everything together
+    scene.add(globeGroup);
+
+    const particleCount = 4500;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const radius = 5;
+
+    for (let i = 0; i < particleCount; i++) {
+      const phi = Math.acos(-1 + (2 * i) / particleCount);
+      const theta = Math.sqrt(particleCount * Math.PI) * phi;
+
+      const x = radius * Math.sin(phi) * Math.cos(theta);
+      const y = radius * Math.sin(phi) * Math.sin(theta);
+      const z = radius * Math.cos(phi);
+
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
+    }
+
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+    const pMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.06,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const globeParticles = new THREE.Points(geometry, pMaterial);
+    globeGroup.add(globeParticles);
+
+    const glowGeo = new THREE.SphereGeometry(radius * 1.01, 32, 32);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.04,
+    });
+    const globeGlow = new THREE.Mesh(glowGeo, glowMat);
+    globeGroup.add(globeGlow);
+
+    // Initial tilt
+    globeGroup.rotation.x = 0.2;
+
+    // --- 3. Interaction State ---
+    let isHovered = false;
+    let isDragging = false;
+    let previousX = 0;
+    let previousY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+
+    // Colors for transition
+    const colorWhite = new THREE.Color(0xffffff);
+    const colorPurple = new THREE.Color(0x9333ea); // Very light purple (Tailwind purple-300)
+
+    // Hover Events
+    container.addEventListener("mouseenter", () => {
+      isHovered = true;
+      if (!isDragging) container.style.cursor = "grab";
+    });
+    container.addEventListener("mouseleave", () => {
+      isHovered = false;
+      if (!isDragging) container.style.cursor = "default";
+    });
+
+    // Drag Events (Pointer events handle both mouse and touch)
+    container.addEventListener("pointerdown", (e) => {
+      isDragging = true;
+      previousX = e.clientX;
+      previousY = e.clientY;
+      container.style.cursor = "grabbing";
+    });
+
+    window.addEventListener("pointerup", () => {
+      isDragging = false;
+      if (isHovered) container.style.cursor = "grab";
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (isDragging) {
+        const deltaX = e.clientX - previousX;
+        const deltaY = e.clientY - previousY;
+        
+        // Calculate velocity for momentum
+        velocityX = deltaX * 0.005;
+        velocityY = deltaY * 0.005;
+        
+        previousX = e.clientX;
+        previousY = e.clientY;
+      }
+    });
+
+    // --- 4. Animation Loop ---
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      // Smooth Color Transition (Lerp)
+      const targetColor = isHovered ? colorPurple : colorWhite;
+      pMaterial.color.lerp(targetColor, 0.05); // 0.05 controls the transition speed
+      glowMat.color.lerp(targetColor, 0.05);
+
+      // Handle Rotation & Momentum
+      if (isDragging) {
+        globeGroup.rotation.y += velocityX;
+        globeGroup.rotation.x += velocityY;
+      } else {
+        // Apply friction to slow down after releasing
+        velocityX *= 0.95;
+        velocityY *= 0.95;
+        
+        // Add base auto-rotation to the Y axis momentum
+        globeGroup.rotation.y += velocityX + 0.002;
+        globeGroup.rotation.x += velocityY;
+
+        // Optionally clamp the X rotation so it slowly returns to the default tilt
+        globeGroup.rotation.x += (0.2 - globeGroup.rotation.x) * 0.02;
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // --- 5. Flawless Resizing Logic ---
+    const handleResize = () => {
+      if (!container) return;
+      
+      width = container.clientWidth;
+      height = container.clientHeight;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(width, height);
+    };
+
+    window.addEventListener("resize", handleResize);
+  }
+</script>
+
+<style>
+  #globe-wrapper canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    outline: none;
+  }
+</style>
