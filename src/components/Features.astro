@@ -5,14 +5,32 @@ import SpaceButtons from "../components/SpaceButtons.astro";
 ---
 
 <section
-  class="relative min-h-screen bg-[#07050f] overflow-hidden flex flex-col pt-16 pb-10 lg:pt-22 lg:pb-2 font-sans selection:bg-purple-500/30"
+  class="relative min-h-screen bg-[#050212] overflow-hidden flex flex-col justify-center font-sans selection:bg-purple-500/30"
 >
   
-  <div class="relative z-30 flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-4 md:px-6 gap-12 lg:gap-10 mb-8 lg:mb-2">
+  <canvas
+    id="starfield"
+    class="hidden lg:block absolute inset-0 w-full h-full z-0 pointer-events-none"
+  ></canvas>
+
+  <div class="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-7xl mx-auto px-4 lg:px-6 z-10 pointer-events-none justify-center">
+    <div class="relative w-full lg:aspect-video max-h-[80vh] rounded-3xl overflow-hidden bg-black shadow-2xl mix-blend-screen opacity-80">
+      <video
+        src="/assets/q-c3d7becf.webm"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="w-full h-full object-cover opacity-90"
+      ></video>
+    </div>
+  </div>
+
+  <div class="relative z-30 flex flex-col lg:flex-row items-center justify-between w-full max-w-[1400px] mx-auto px-4 lg:px-6 gap-20 lg:gap-15 py-6 lg:py-20">
     
     <div class="flex flex-col items-center lg:items-start w-full lg:w-1/2">
       <div
-        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-purple-400/20 bg-purple-900/10 text-[11px] md:text-[12px] lg:text-[13px] text-purple-200 mb-6 lg:mb-8 backdrop-blur-md"
+        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-purple-400/20 bg-purple-900/30 text-[11px] lg:text-[13px] text-purple-200 mb-6 lg:mb-8 backdrop-blur-md"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
           <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
@@ -20,42 +38,25 @@ import SpaceButtons from "../components/SpaceButtons.astro";
         <span class="tracking-wide">New: Mission control is now online</span>
       </div>
 
-      <h1 class="text-4xl md:text-6xl lg:text-[72px] leading-[1.1] font-bold tracking-tight text-white mb-4 lg:mb-6 text-center lg:text-left drop-shadow-lg">
-        Code for the Cosmos
+      <h1 class="text-4xl lg:text-[82px] leading-[1.1] font-bold tracking-tight text-white mb-4 lg:mb-6 text-center lg:text-left drop-shadow-lg">
+        Code for <br/> Cosmos
       </h1>
 
-      <p class="text-base md:text-lg lg:text-[21px] text-[#a19fad] text-center lg:text-left max-w-lg font-normal drop-shadow-md">
+      <p class="text-base lg:text-[21px] text-[#a19fad] text-center lg:text-left max-w-lg font-normal drop-shadow-md">
         Join the ultimate student hackathon for space-based software.
       </p>
     </div>
 
     <div class="w-full lg:w-1/2 flex justify-center lg:justify-end relative z-20 group">
-     <div
-  class="relative rounded-[20px] w-full max-w-[300px] md:max-w-[400px] lg:max-w-[470px] aspect-square lg:aspect-[3/3] flex items-center justify-center z-10"
->
-  <Globe />
-</div>
+      <div
+        class="relative rounded-[20px] w-full max-w-[300px] lg:max-w-[470px] aspect-square lg:aspect-[3/3] flex items-center justify-center z-10"
+      >
+        <Globe />
+      </div>
     </div>
     
   </div>
 
-  <div class="relative w-full max-w-7xl mx-auto px-4 md:px-6 z-2 mt-8 lg:mt-1 flex justify-center">
-    <div class="relative w-full rounded-3xl overflow-hidden bg-black shadow-2xl mix-blend-screen">
-      <video
-        src="/assets/q-c3d7becf.webm"
-        autoplay
-        loop
-        muted
-        playsinline
-        class="w-full h-auto max-h-[250px] md:max-h-[350px] lg:max-h-[500px] object-cover opacity-90"
-      ></video>
-
-      <canvas
-        id="starfield"
-        class="absolute inset-0 w-full h-full z-10 opacity-70"
-      ></canvas>
-    </div>
-  </div>
 </section>
 
 <script>
@@ -65,63 +66,71 @@ import SpaceButtons from "../components/SpaceButtons.astro";
 
     const ctx = canvas.getContext("2d");
     let stars = [];
-    const numStars = 100;
+    const numStars = 300; 
 
-    // Define boundary variables for both X and Y
-    let minX = 0,
-      maxX = 0;
-    let minY = 0,
-      maxY = 0;
+    let centerX = 0;
+    let centerY = 0;
+    let maxDistance = 0;
 
     function resizeCanvas() {
+      // Don't calculate sizes if canvas is hidden
+      if (window.innerWidth < 1024) return;
+
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      
+      centerX = canvas.width / 2;
+      centerY = canvas.height / 2;
+      
+      maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+    }
 
-      // Calculate sizes for a 3x2 grid
-      const colWidth = canvas.width / 3;
-      const rowHeight = canvas.height / 2;
-
-      // Target: 2nd Column
-      minX = colWidth * 1;
-      maxX = colWidth * 2;
-
-      // Target: 1st Row
-      minY = 0;
-      maxY = rowHeight * 1;
+    function createStar(randomizeDistance = false) {
+      return {
+        angle: Math.random() * Math.PI * 2,
+        distance: randomizeDistance ? Math.random() * maxDistance : maxDistance,
+        speed: 0.5 + Math.random() * 1.5,
+        angularSpeed: 0.001 + Math.random() * 0.003,
+        size: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.8 + 0.2,
+      };
     }
 
     function initStars() {
+      if (window.innerWidth < 1024) return;
+      
       stars = [];
       for (let i = 0; i < numStars; i++) {
-        stars.push({
-          // Spawn strictly within our target grid cell
-          x: minX + Math.random() * (maxX - minX),
-          y: minY + Math.random() * (maxY - minY),
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: (Math.random() - 0.5) * 0.6,
-          radius: Math.random() * 1.2,
-          alpha: Math.random(),
-        });
+        stars.push(createStar(true));
       }
     }
 
     function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Pause animation entirely on mobile/tablet to save battery
+      if (window.innerWidth < 1024) {
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      ctx.fillStyle = "rgba(7, 5, 15, 0.3)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       stars.forEach((star) => {
-        star.x += star.vx;
-        star.y += star.vy;
+        const distanceRatio = Math.max(0.1, star.distance / maxDistance);
+        const acceleration = 1 + (1 - distanceRatio) * 3;
 
-        // Wrap X strictly within the 2nd column bounds
-        if (star.x < minX) star.x = maxX;
-        if (star.x > maxX) star.x = minX;
+        star.angle += star.angularSpeed * acceleration;
+        star.distance -= star.speed * acceleration;
 
-        // Wrap Y strictly within the 1st row bounds
-        if (star.y < minY) star.y = maxY;
-        if (star.y > maxY) star.y = minY;
+        if (star.distance <= 5) {
+          Object.assign(star, createStar(false));
+        }
+
+        const x = centerX + Math.cos(star.angle) * star.distance;
+        const y = centerY + Math.sin(star.angle) * star.distance;
 
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.arc(x, y, star.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
         ctx.fill();
       });

@@ -37,25 +37,29 @@
       </button>
     </div>
 
-    <button id="mobile-toggle" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-colors">
+    <button id="mobile-toggle" class="md:hidden relative flex flex-col justify-center items-center w-10 h-10 gap-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-colors z-50">
       <span class="w-4 h-[1.5px] bg-white rounded-full transition-transform duration-300 origin-center"></span>
       <span class="w-4 h-[1.5px] bg-white rounded-full transition-opacity duration-300"></span>
       <span class="w-4 h-[1.5px] bg-white rounded-full transition-transform duration-300 origin-center"></span>
     </button>
   </div>
+</header>
 
-  <div id="mobile-menu" class="fixed inset-0 bg-[#07050f]/95 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-500 flex flex-col justify-center items-center gap-8 -z-10">
-    <a href="#" class="text-2xl font-medium text-gray-400 hover:text-white hover:scale-110 transition-all">Challenges</a>
-    <a href="#" class="text-2xl font-medium text-gray-400 hover:text-white hover:scale-110 transition-all">Schedule</a>
-    <a href="#" class="text-2xl font-medium text-gray-400 hover:text-white hover:scale-110 transition-all">Resources</a>
-    <div class="w-12 h-px bg-white/10 my-4"></div>
-    <a href="#" class="text-xl font-medium text-gray-400 hover:text-white transition-colors">Hacker Portal</a>
-    <button class="bg-white text-black px-8 py-3 rounded-full text-lg font-semibold active:scale-95 transition-all">
+<div id="mobile-menu" class="fixed inset-0 top-0 bg-[#07050f]/98 backdrop-blur-3xl pointer-events-none transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col justify-center items-center z-40 opacity-0 -translate-y-full">
+  <div class="flex flex-col items-center gap-6 w-full max-w-sm px-6 mt-12">
+    <a href="#" class="mobile-item text-3xl font-medium text-gray-300 hover:text-white hover:scale-105 transition-all opacity-0 translate-y-8">Challenges</a>
+    <a href="#" class="mobile-item text-3xl font-medium text-gray-300 hover:text-white hover:scale-105 transition-all opacity-0 translate-y-8">Schedule</a>
+    <a href="#" class="mobile-item text-3xl font-medium text-gray-300 hover:text-white hover:scale-105 transition-all opacity-0 translate-y-8">Resources</a>
+    
+    <div class="mobile-item w-16 h-px bg-white/10 my-4 opacity-0 translate-y-8 transition-all"></div>
+    
+    <a href="#" class="mobile-item text-xl font-medium text-gray-400 hover:text-white transition-colors opacity-0 translate-y-8">Hacker Portal</a>
+    
+    <button class="mobile-item mt-4 bg-white text-black w-full py-4 rounded-full text-lg font-bold active:scale-95 transition-all opacity-0 translate-y-8 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
       Register Now
     </button>
   </div>
-
-</header>
+</div>
 
 <style>
   /* Premium load-in animation */
@@ -69,6 +73,7 @@
   // Mobile Menu Logic
   const toggle = document.getElementById('mobile-toggle');
   const menu = document.getElementById('mobile-menu');
+  const items = document.querySelectorAll('.mobile-item');
   const spans = toggle?.querySelectorAll('span');
   let isOpen = false;
 
@@ -76,27 +81,51 @@
     isOpen = !isOpen;
     
     if (isOpen) {
-      // Show menu
-      menu?.classList.remove('opacity-0', 'pointer-events-none');
-      menu?.classList.add('opacity-100', 'pointer-events-auto');
+      // 1. Lock Body Scroll
+      document.body.style.overflow = 'hidden';
+
+      // 2. Drop the menu background
+      menu?.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
+      menu?.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
       
-      // Animate hamburger to 'X'
+      // 3. Animate hamburger to 'X'
       if (spans) {
         spans[0].style.transform = 'translateY(5.5px) rotate(45deg)';
         spans[1].style.opacity = '0';
         spans[2].style.transform = 'translateY(-5.5px) rotate(-45deg)';
       }
+
+      // 4. Staggered fade in/slide up for menu links
+      items.forEach((item, index) => {
+        setTimeout(() => {
+          item.classList.remove('opacity-0', 'translate-y-8');
+          item.classList.add('opacity-100', 'translate-y-0');
+          (item as HTMLElement).style.transitionTimingFunction = 'cubic-bezier(0.22, 1, 0.36, 1)';
+          (item as HTMLElement).style.transitionDuration = '700ms';
+        }, 150 + (index * 75)); 
+      });
+
     } else {
-      // Hide menu
-      menu?.classList.remove('opacity-100', 'pointer-events-auto');
-      menu?.classList.add('opacity-0', 'pointer-events-none');
+      // 1. Unlock Body Scroll
+      document.body.style.overflow = '';
+
+      // 2. Pull the menu background up
+      menu?.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+      menu?.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
       
-      // Reset hamburger
+      // 3. Reset hamburger
       if (spans) {
         spans[0].style.transform = 'none';
         spans[1].style.opacity = '1';
         spans[2].style.transform = 'none';
       }
+
+      // 4. Reset items instantly so they are ready for the next open animation
+      items.forEach((item) => {
+        item.classList.remove('opacity-100', 'translate-y-0');
+        item.classList.add('opacity-0', 'translate-y-8');
+        (item as HTMLElement).style.transitionDuration = '200ms'; 
+      });
     }
   });
 </script>
